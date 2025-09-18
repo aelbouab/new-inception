@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sed -i 's|listen = /run/php/php7.4-fpm.sock|listen = 9000|' /etc/php/7.4/fpm/pool.d/www.conf
+sed -i 's|listen = /run/php/php8.2-fpm.sock|listen = 9000|' /etc/php/8.2/fpm/pool.d/www.conf
 
 wp core download --allow-root
 
@@ -34,4 +34,4 @@ else
     echo "User '$WP_USR' already exists, skipping creation."
 fi
 
-exec /usr/sbin/php-fpm7.4 -F
+exec /usr/sbin/php-fpm8.2 -F

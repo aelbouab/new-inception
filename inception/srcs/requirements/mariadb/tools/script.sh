@@ -1,10 +1,16 @@
 #!/bin/bash
+set -e
 
+# Start MariaDB safely in the background, skip networking for init
+mysqld_safe --skip-networking &
 
-service mariadb start
+# Wait until MariaDB is ready
+echo "Waiting for MariaDB to start..."
+until mysqladmin ping --silent; do
+  sleep 1
+done
 
-sleep 5
-
+# Run initialization SQL commands
 cat <<EOF > /tmp/data.sql
 CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE;
 CREATE USER IF NOT EXISTS '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
@@ -15,5 +21,12 @@ EOF
 
 mysql < /tmp/data.sql
 
-service mariadb stop
-exec mysqld
+# Shut down the background MariaDB instance cleanly
+mysqladmin shutdown
+
+# Make sure data directory has correct ownership (adjust path if needed)
+chown -R mysql:mysql /var/lib/mysql
+
+# Run mysqld as mysql user in the foreground to keep container alive
+exec gosu mysql mysqld
+

@@ -1,9 +1,9 @@
-FROM debian:bullseye
+FROM debian:bookworm
 
 RUN apt update 
-RUN apt install php7.4-fpm php7.4-mysql mariadb-client curl -y
+RUN apt install php8.2-fpm php8.2-mysql mariadb-client curl -y
 
-RUN mkdir /run/php
+RUN mkdir -p /run/php
 
 COPY ./tools/script.sh /var/www/html/
 

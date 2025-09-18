@@ -1,0 +1,32 @@
+
+- This `RUN` command generates a **self-signed SSL certificate** for HTTPS.
+- `openssl req`: Starts a certificate request.
+- `-x509`: Creates a self-signed certificate instead of a certificate signing request (CSR).
+- `-nodes`: Skips encryption of the private key (no passphrase needed).
+- `-days 365`: Valid for 365 days.
+- `-newkey rsa:2048`: Generates a new RSA private key with 2048 bits.
+- `-keyout`: Where to save the private key.
+- `-out`: Where to save the certificate.
+- `-subj`: Provides certificate details (country, state, location, organization, unit, common name).
+- This creates SSL files used later by nginx to enable HTTPS.
+
+---
+
+### `COPY ./tools/nginx.conf /etc/nginx/conf.d/`
+
+- Copies your custom `nginx.conf` file from the local `./tools` directory on your host machine into the container.
+- The destination path `/etc/nginx/conf.d/` is where Nginx looks for site configuration files.
+- This replaces or adds configuration to control how Nginx behaves.
+
+---
+
+### `ENTRYPOINT ["nginx", "-g", "daemon off;"]`
+
+- Sets the container's **default executable and arguments** when it starts.
+- Runs the `nginx` process.
+- `-g "daemon off;"` tells Nginx **not to daemonize** (stay in the foreground).
+- Keeping Nginx in the foreground is important for Docker so the container stays alive as long as Nginx runs.
+
+---
+
+If you'd like, I can also explain how this all fits together in a usage scenario!

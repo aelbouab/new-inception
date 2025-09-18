@@ -6,7 +6,6 @@ services:
         container_name: nginx
         depends_on:
             - wordpress
-        image: nginx:v8
         env_file:
             - .env
         ports:
@@ -18,7 +17,6 @@ services:
             - inception
     wordpress:
         build: ./requirements/wordpress/.
-        image: wordpress:v8
         container_name: wordpress
         depends_on:
             - mariadb
@@ -32,7 +30,6 @@ services:
     mariadb:
         build: ./requirements/mariadb/.
         container_name: mariadb
-        image: mariadb:v8
         env_file:
             - .env
         restart: always
