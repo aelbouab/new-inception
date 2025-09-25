@@ -3,8 +3,6 @@ FROM debian:bookworm
 RUN apt update 
 RUN apt install php8.2-fpm php8.2-mysql mariadb-client curl -y
 
-RUN mkdir -p /run/php
-
 COPY ./tools/script.sh /var/www/html/
 
 WORKDIR /var/www/html/

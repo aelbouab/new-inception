@@ -15,9 +15,7 @@ if [ ! -f "/var/www/html/wp-config.php" ]; then
         --dbpass="$WORDPRESS_DB_PASSWORD" \
         --dbhost="$WORDPRESS_DB_HOST" \
         --allow-root
-fi
-
-if ! wp core is-installed --allow-root; then
+   
     wp core install \
         --url="$DOMAIN_NAME" \
         --title="My WordPress Site" \
@@ -25,13 +23,10 @@ if ! wp core is-installed --allow-root; then
         --admin_password="$WP_ADMIN_PWD" \
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root
-fi
-
-if ! wp user list --field=user_login --allow-root | grep -q "^$WP_USR$"; then
+    
     wp user create "$WP_USR" "$WP_EMAIL" \
         --user_pass="$WP_PWD" --allow-root
-else
-    echo "User '$WP_USR' already exists, skipping creation."
 fi
+
 
 exec /usr/sbin/php-fpm8.2 -F
